@@ -1,0 +1,218 @@
+!!!
+!!!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!!!                                 user_input_saptarsy.txt
+!!!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!!!
+!!! This file contains the input provided by the user. The user can modify the input parameters and
+!!! also specify the output options.
+!!! This file is the main input file of the astrochemistry code Saptarsy.
+!!! Authors: Rumpa Choudhury    (2011-2013)
+!!!          Gwendoline Stephan (2013-2016)
+!!!          Dirk Schaefer      (2016-2017)
+!!!
+!!!
+! About the format of the input/output parameters:
+!
+! - Please respect the format of the file.
+!
+! - There should not be any gap/white space in the description tag of the input/output parameters
+!   and the value of the input/output,
+!   e.g. description tag "Main_Network_File(s):" and input(string) "filename".
+!
+! - The description tag and the value of the input/output should be separated by a gap/white space
+!   e.g. "Inp_Dir: ../input/".
+!   Please note the white space after the ":" sign.
+!
+! - "S": String, "D": Double Precision, "I": Integer
+!
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!___________________________________________________________________________________________________
+!                                   Options for Flags
+!___________________________________________________________________________________________________
+!
+! Flag off= 0, Flag on= 1
+! FLAG_Td_evol:       0 --> Temperature will be the given initial value for all times
+!                     1 --> Temporal evolution of temperature will be included from file
+!                           "Dust_&_gas_temperature(S)"
+! FLAG_time_file:     0 --> Use logarithmic timesteps based on First_Output_Time and Timestep
+!                     1 --> Time steps will be included from file "Optional_Inp_File_time(S)"
+!                           (First_Output_Time and Timestep are not used, but these values should be
+!                            there to maintain the inputfile format.)
+! FLAG_more_time:     0 --> Computation for the same number of timesteps as in the temperature file
+!                     1 --> Computation for more timesteps given by input "More_timesteps(I)"
+! FLAG_G0_evol:       0 --> Do not include the time evolution of the radiative scaling factor G0
+!                     1 --> Include it from file "Radiative_scale_factor(S)"
+! FLAG_phot_reac      0 --> Do not include photo reactions
+!                     1 --> Include photo reactions caused by G0 and CRs (dissociation, desorption)
+! FLAG_multilayer:    0 --> Do not include the the multilayer approach, i.e. one big surface layer
+!                     1 --> Include the multilayer approach for the ice layers on the grains
+!                     2 --> Same as 1 but with no growth of the site number per monolayer
+! FLAG_core_collapse: 0 --> 0 --> No cold core collapse
+!                     1 --> Simulate a cold core collapse:
+!                           t (if FLAG_more_time=0), nH, Td and Av used from "Core_Collapse_File"
+!                     2 --> Same as 1 but with no temperature evolution
+! FLAG_bury_atoms:    0 --> H, H2, He, C, N, O, S cannot be buried in the mantle
+!                     1 --> ---------- " -------- can    be buried in the mantle
+! FLAG_read_Eb        0 --> Calculate the diffusion energy Eb from desorption energy ED via Eb2ED
+!                     1 --> Eb will be read from file. If no values for species then Eb2ED is used
+! FLAG_reac_diff_comp 0 --> No Reaction-Diffusion Competition for surface reactions (Garrod & Pauly 2011)
+!                     1 --> Include Reaction-Diffusion Competition for surface reactions
+!
+
+Flags:
+Total_no._of_Flags(I)= 10
+FLAG_Td_evol(I): 1
+FLAG_time_file(I): 1
+FLAG_more_time(I): 1
+FLAG_G0_evol(I): 0
+FLAG_phot_reac(I): 1
+FLAG_multilayer(I): 1
+FLAG_core_collapse(I): 0
+FLAG_bury_atoms(I): 1
+FLAG_read_Eb(I): 0
+FLAG_reac_diff_comp(I): 0
+End Flags
+
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!___________________________________________________________________________________________________
+!                                   Input Files
+!___________________________________________________________________________________________________
+!
+! The name of the optional input file should be there even if the user does not use it.
+! Some files might not be needed, depending on the choice of the flags. 
+!
+
+InpFiles:
+Total_no._of_Files(I)= 8
+Inp_Dir(S): /home/ngo/new/input/
+Principal_Network_File(S): benchmark.dat.334spcs.04-11-15
+GrainSpcs_Network_File(S): osu_gg-suface_info.txt.12-11-15.334spcs
+Initial_Abundance_File(S): final_rel_abun_all_spcs.txt
+Optional_Inp_File_time(S): time_steps.txt
+Dust_&_gas_temperature(S): temp_evolution.txt
+Timesteps_from_RADMC3D(S): time.txt
+Radiative_scale_factor(S): G0_evolution.txt
+Core_Collapse_File(S): collapse_parameters.txt
+End InpFiles
+
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!___________________________________________________________________________________________________
+!                                   Input parameter : Time
+!___________________________________________________________________________________________________
+!
+! The unit for time is year.
+!
+
+Times:
+Finishing_time(D)= 1.0e+07
+First_Output_time(D)= 1.0e-01
+Timesteps_RADMC3D(I)= 80
+More_timesteps(I)= 300
+End Times
+
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!___________________________________________________________________________________________________
+!                                   Input parameter : Zones
+!___________________________________________________________________________________________________
+!
+! Specify the physical properties of the zones in this section.
+!
+! 1st Column:       Zone ID
+! 2nd Column:       Av of the zone (in mag)
+! 3rd Column:       Number density of hydrogen (in cm-3)
+! 4th & 5th Column: Initial gas and dust temperature (in K)
+! 6th & 7th Column: Inner radius of the zone (in cm and in AU)
+! 8th Column:       Initial radiation field strength GO (in Draine units)
+!
+
+Zones:
+Total_no._of_Zones= 22
+Zone_IDs       Av[mag]      nH[cm-3]   Tgas[K]  Tdust[K]      r_in[cm]      r_in[AU]  G0[Drai]
+Zone_001  7.190182E+02  1.795507E+08  1.00E+01  1.00E+01  7.479893E+15  5.000000E+02  1.00E-20
+Zone_002  1.434455E+03  1.782112E+08  1.00E+01  1.00E+01  1.495978E+16  9.999999E+02  1.00E-20
+Zone_003  2.840657E+03  1.729765E+08  1.00E+01  1.00E+01  2.991957E+16  2.000000E+03  1.00E-20
+Zone_004  5.467326E+03  1.538648E+08  1.00E+01  1.00E+01  5.983914E+16  4.000000E+03  1.00E-20
+Zone_005  7.723038E+03  1.275166E+08  1.00E+01  1.00E+01  8.975874E+16  6.000001E+03  1.00E-20
+Zone_006  9.536588E+03  9.941249E+07  1.00E+01  1.00E+01  1.196783E+17  8.000000E+03  1.00E-20
+Zone_007  1.091582E+04  7.372812E+07  1.00E+01  1.00E+01  1.495978E+17  9.999999E+03  1.00E-20
+Zone_008  1.191931E+04  5.261598E+07  1.00E+01  1.00E+01  1.795174E+17  1.200000E+04  1.00E-20
+Zone_009  1.262555E+04  3.651979E+07  1.00E+01  1.00E+01  2.094370E+17  1.400000E+04  1.00E-20
+Zone_010  1.311115E+04  2.488274E+07  1.00E+01  1.00E+01  2.393566E+17  1.600000E+04  1.00E-20
+Zone_011  1.344016E+04  1.677103E+07  1.00E+01  1.00E+01  2.692762E+17  1.800000E+04  1.00E-20
+Zone_012  1.366132E+04  1.125004E+07  1.00E+01  1.00E+01  2.991958E+17  2.000000E+04  1.00E-20
+Zone_013  1.380962E+04  7.545792E+06  1.00E+01  1.00E+01  3.291154E+17  2.200000E+04  1.00E-20
+Zone_014  1.390922E+04  5.078260E+06  1.00E+01  1.00E+01  3.590349E+17  2.400000E+04  1.00E-20
+Zone_015  1.397642E+04  3.437679E+06  1.00E+01  1.00E+01  3.889545E+17  2.600000E+04  1.00E-20
+Zone_016  1.402207E+04  2.344810E+06  1.00E+01  1.00E+01  4.188740E+17  2.800000E+04  1.00E-20
+Zone_017  1.405333E+04  1.613396E+06  1.00E+01  1.00E+01  4.487937E+17  3.000000E+04  1.00E-20
+Zone_018  1.407493E+04  1.120662E+06  1.00E+01  1.00E+01  4.787132E+17  3.200000E+04  1.00E-20
+Zone_019  1.409001E+04  7.860974E+05  1.00E+01  1.00E+01  5.086328E+17  3.400000E+04  1.00E-20
+Zone_020  1.410063E+04  5.569437E+05  1.00E+01  1.00E+01  5.385524E+17  3.600000E+04  1.00E-20
+Zone_021  1.410820E+04  3.985393E+05  1.00E+01  1.00E+01  5.684719E+17  3.800000E+04  1.00E-20
+Zone_022  1.411363E+04  2.880017E+05  1.00E+01  1.00E+01  5.983914E+17  4.000000E+04  1.00E-20
+End Zones
+
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!___________________________________________________________________________________________________
+!                                   Options for Output and Reaction Rates
+!___________________________________________________________________________________________________
+!
+! If the user wants to calculate the reaction rates (saptarsy.x -r) of some species, this will
+! be for the ones written here. Note that saptarsy.x -m (main) had to be run previously.
+!
+
+OutputDir:
+Out_Dir(S): ./output/
+End OutputDir
+
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!___________________________________________________________________________________________________
+!                                   Options for other Input paramters
+!___________________________________________________________________________________________________
+!
+! IonisationFront_radius: If no PDR (no HII region) IonisationFront_radius = 0
+!                         Always be sure the first radius r >= IonisationFront_radius !!!
+! zeta:                   The cosmic ray ionization rate in 1/s
+! reactive_desor_frac:    Fraction of grain reactions that lead to reactive desorption
+! Eb2ED                   Fraction of the binding energy to the desorption energy
+! dust2g_m                Fraction of dust to gas mass (1.0E-02_dp/1.09754088749_dp)
+! rho_d                   Mass density of grains (g cm^-3)
+! r_d                     Grain Radius (cm)
+! sds                     Surface density of sites (cm-2)
+! Tm_CR                   Peak grain temp (CR heating)
+! barrier_thickness       Potential barrier for tunneling processes (cm)
+! stc_nu                  Sticking coefficient for neutral species
+! stc_pve                 Sticking coefficient for +ve charged species
+! stc_nve                 Sticking coefficient for -ve charged species
+! N_layer_boundary:       Constraint for the max. number of layers (not implemented dynamically)
+! N_layer_segments:       Number of segments that each layer will have
+! N_surface_layers:       Number of chemically active surface layers
+! abun_min:               Minimal abundance possible
+! RTOL/ATOL:              Relative and absolute tolerances of the ODE solver
+!
+
+Parameters:
+IonisationFront_radius(D)= 0.0E+00
+zeta(D)= 1.3E-17
+reactive_desor_frac(D)= 1.0E-02
+Eb2ED(D)= 0.77
+dust2g_m(D)= 0.00911127787036
+rho_d(D)= 3.0
+r_d(D)= 1e-05
+sds(D)= 1.5e+15
+Tm_CR(D)= 70.0
+barrier_thickness(D)= 1e-08
+stc_nu(D)= 1.0
+stc_pve(D)= 0.0
+stc_nve(D)= 0.0
+N_layer_boundary(I)= 5000
+N_layer_segments(I)= 4
+N_surface_layers(I)= 4
+abun_min(D)= 1e-50
+RTOL(D)= 1e-06
+ATOL(D)= 1e-12
+End Parameters
+
+!!!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!!!                                           END
+!!!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
