@@ -5,28 +5,16 @@ import os
 import pandas as pd
 from scipy import interpolate
 
-#list_mole=['C+']#,'SO2_OCS','H2S','H2CS','HCS+','SO2_CS','SO2_SO','SO2_H2S','SO2_H2CS','SO2_HCS+']
-#list_mole=['Td','SO2','SO','OCS']#,'JOCS','JCS','JSO','JH2S','JH2CS']#,'SO2_OCS','H2S','H2CS','HCS+','SO2_CS','SO2_SO','SO2_H2S','SO2_H2CS','SO2_HCS+']
-#list_mole=['S']#,'SO','OCS']#,'SO2_H2CS','SO2_HCS+']
-#list_mole=['C','HCO+','H2S','CS']#,'SO2_H2CS','SO2_HCS+' 'H+','HE+','H2+','C+']#]
-list_mole=['SIO']#,'SO','OCS','H2S','H2CS','CS']
-#list_mole=['H+','H3+','S','HE+','S+','SO2','SO','OCS','CH3OH']
-#list_mole=['nH']#,'SO2','SO','OCS','H2S']
 
-#list_mole=['SO2']#,'CS','H2S','SO','SO2_OCS','SO2_CS','SO2_SO']
+list_mole=['Td']#'Td','nH','SO','OCS','H2S','H2CS','CS']
+
 #add_="__22_z_"
 #add_="_"
 add_="__22_z_"
 
 list_ratio_mole=[]
-#list_lum=['zeta_22_1','zeta_22_100']
+list_lum=['zeta_22_1','zeta_22_100']
 
-list_lum=[
-'zeta_22_1',
-'zeta_22_10',
-'zeta_22_20',
-'zeta_22_50',
-'zeta_22_100']
 
 '''
 list_lum=[
@@ -35,11 +23,8 @@ list_lum=[
 '1.0e+08_stars_0_density_9.0e7_plummer_4.0',
 '2.0_stars_0_density_9.0e7_plummer_4.0'
 ]
+
 '''
-
-
-
-
 
 output_folder='output_inanna'
 output_csv='csv_output'
@@ -90,11 +75,7 @@ for lum in list_lum:
                 ff = interpolate.interp1d(time_out, ee)
                 mole_evol=ff(time_inter)
                 #print(mole_evol.shape)
-
-
-
-
-
+                
                 for j in range(len(mole_evol)):
                     gg.write('{} '.format(mole_evol[j]))
                 gg.write('\n')
