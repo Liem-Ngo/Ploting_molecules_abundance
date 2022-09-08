@@ -6,14 +6,19 @@ import pandas as pd
 from scipy import interpolate
 
 
-list_mole=['Td']#'Td','nH','SO','OCS','H2S','H2CS','CS']
+list_mole=['Td','nH','SO2','OCS','H2S','H2CS','CS']
 
 #add_="__22_z_"
 #add_="_"
 add_="__22_z_"
 
 list_ratio_mole=[]
-list_lum=['zeta_22_1','zeta_22_100']
+list_lum=[
+    'zeta_22_1',
+    'zeta_22_10',
+    'zeta_22_50',
+    'zeta_22_100'
+    ]
 
 
 '''
@@ -75,7 +80,7 @@ for lum in list_lum:
                 ff = interpolate.interp1d(time_out, ee)
                 mole_evol=ff(time_inter)
                 #print(mole_evol.shape)
-                
+
                 for j in range(len(mole_evol)):
                     gg.write('{} '.format(mole_evol[j]))
                 gg.write('\n')
