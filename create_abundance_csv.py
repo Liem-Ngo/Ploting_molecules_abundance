@@ -21,15 +21,6 @@ list_lum=[
     ]
 
 
-'''
-list_lum=[
-'0.1_stars_0_density_9.0e7_plummer_4.0',
-'0.5_stars_0_density_9.0e7_plummer_4.0',
-'1.0e+08_stars_0_density_9.0e7_plummer_4.0',
-'2.0_stars_0_density_9.0e7_plummer_4.0'
-]
-
-'''
 
 output_folder='output_inanna'
 output_csv='csv_output'
